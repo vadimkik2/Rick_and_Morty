@@ -1,22 +1,18 @@
 package mate.academy.springboot.rickandmortyapp.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class HttpClient {
-    private final CloseableHttpClient httpClient = HttpClients.createDefault();
+    private final CloseableHttpClient httpClient;
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
 
     public <T> T get(String url,Class<T> clazz) {
         HttpGet request = new HttpGet(url);

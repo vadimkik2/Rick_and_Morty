@@ -14,6 +14,7 @@ import mate.academy.springboot.rickandmortyapp.dto.external.ApiResponseDto;
 import mate.academy.springboot.rickandmortyapp.dto.mapper.MovieCharacterMapper;
 import mate.academy.springboot.rickandmortyapp.model.MovieCharacter;
 import mate.academy.springboot.rickandmortyapp.repository.MovieCharacterRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
     private final HttpClient httpClient;
     private final MovieCharacterRepository movieCharacterRepository;
     private final MovieCharacterMapper mapper;
+    @Value("${value}")
+    private String valueFromFile;
 
     public MovieCharacterServiceImpl(HttpClient httpClient,
                                      MovieCharacterRepository movieCharacterRepository,
@@ -37,7 +40,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
     @Override
     public void syncExternalCharacters() {
         log.info("syncExternalCharacters method was invoke at: " + LocalDateTime.now());
-        ApiResponseDto apiResponseDto = httpClient.get("https://rickandmortyapi.com/api/character",
+        ApiResponseDto apiResponseDto = httpClient.get(valueFromFile,
                 ApiResponseDto.class);
 
         saveDtosToDb(apiResponseDto);
@@ -58,7 +61,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
 
     @Override
     public List<MovieCharacter> findAlByNameContains(String namePart) {
-        return movieCharacterRepository.findAlByNameContains(namePart);
+        return movieCharacterRepository.findAllByNameContains(namePart);
     }
 
     public List<MovieCharacter> saveDtosToDb(ApiResponseDto responseDto) {
