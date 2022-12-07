@@ -1,4 +1,5 @@
-# Rick-and-Morty![img_1.png](img_1.png)
+# Rick-and-Morty
+![img_1.png](img_1.png)
 ## 📋 Description:
 * This application saves to the database the characters from the cartoon Rick and Morty.
 * The ability to get a random character from the database.
